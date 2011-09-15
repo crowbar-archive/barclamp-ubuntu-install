@@ -90,7 +90,7 @@ sync_time
 post_state $HOSTNAME "readying"
 final_state="ready"
 mkdir -p /etc/chef
-wget -q "http://$HTTP_SERVER/ubuntu_dvd/validation.pem" -O- > /etc/chef/validation.pem
+wget -q "http://$HTTP_SERVER/validation.pem" -O- > /etc/chef/validation.pem
 
 # Install Chef
 echo "Installing Chef..."
