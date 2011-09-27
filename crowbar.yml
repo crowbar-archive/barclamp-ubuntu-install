@@ -20,6 +20,8 @@ barclamp:
   display: Ubuntu Install
   description: Ubunutu Installation
   version: 0
+  member:
+    - crowbar
 
 crowbar:
   layout: 1
