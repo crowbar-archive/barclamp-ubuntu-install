@@ -103,9 +103,15 @@ wget -q "http://$HTTP_SERVER/validation.pem" -O- > /etc/chef/validation.pem
 echo "Installing Chef..."
 echo "chef chef/chef_server_url string http://$IP:4000" >/tmp/debsel.conf
 
-log_to apt /usr/bin/apt-get update
+while ! log_to apt /usr/bin/apt-get update ; do
+  echo "Failed to apt-get update, wait and try again"
+  sleep 1
+done
 log_to apt /usr/bin/debconf-set-selections /tmp/debsel.conf
-log_to apt /usr/bin/apt-get --force-yes -y install chef
+while ! log_to apt /usr/bin/apt-get --force-yes -y install chef ; do
+  echo "Failed to apt-get install, wait and try again"
+  sleep 1
+done
 
 log_to chef service chef-client stop
 log_to chef killall chef-client
