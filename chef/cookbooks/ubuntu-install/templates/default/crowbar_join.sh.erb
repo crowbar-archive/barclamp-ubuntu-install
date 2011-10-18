@@ -16,7 +16,7 @@
 
 case $1 in
     stop) exit 0;;
-    status) service chef-client status;;
+    status) service chef-client status ; exit $? ;;
     start|'') pidof chef-client && exit 0;;
     *) echo "Unknown action to crowbar_join.sh."
 	exit 1;;
