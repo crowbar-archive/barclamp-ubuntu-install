@@ -16,7 +16,7 @@
 #
 
 barclamp:
-  name: ubuntu-install
+  name: ubuntu_install
   display: Ubuntu Install
   description: Ubunutu Installation
   version: 0
