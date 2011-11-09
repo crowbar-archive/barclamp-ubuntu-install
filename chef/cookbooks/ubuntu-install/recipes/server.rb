@@ -28,6 +28,7 @@ use_local_security = node[:provisioner][:use_local_security]
 image="ubuntu_install"
 rel_path="ubuntu_dvd/#{image}"
 install_path = "/tftpboot/#{rel_path}"
+pxecfg_path="/tftpboot/ubuntu_dvd/discovery/pxelinux.cfg"
 
 append_line="url=http://#{admin_ip}:#{web_port}/ubuntu_dvd/#{image}/net_seed debian-installer/locale=en_US.utf8 console-setup/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true netcfg/dhcp_timeout=120 netcfg/choose_interface=auto netcfg/get_hostname=\"redundant\" initrd=../install/netboot/ubuntu-installer/amd64/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --"
 
@@ -38,24 +39,10 @@ if ::File.exists?("/etc/crowbar.install.key")
   append_line = "crowbar.install.key=#{::File.read("/etc/crowbar.install.key").chomp.strip} " + append_line
 end
 
-dhcp_group image do
-  action :add
-  options [ "option domain-name \"#{domain_name}\"",
-              "option dhcp-client-state 2",
-              "filename \"#{rel_path}/pxelinux.0\"" ]
-end
-
 # Make sure the directories need to net_install are there.
 directory "#{install_path}"
-directory "#{install_path}/pxelinux.cfg"
 
-# Everyone needs a pxelinux.0
-bash "Install pxelinux.0" do
-  code "cp /usr/lib/syslinux/pxelinux.0 #{install_path}"
-  not_if do ::File.exists?("#{install_path}/pxelinux.0") end
-end
-
-template "#{install_path}/pxelinux.cfg/default" do
+template "#{pxecfg_path}/#{image}" do
   mode 0644
   owner "root"
   group "root"
