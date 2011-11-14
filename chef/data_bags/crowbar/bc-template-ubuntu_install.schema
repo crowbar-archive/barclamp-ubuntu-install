@@ -7,9 +7,6 @@
     "attributes": {
       "type": "map", "required": true, "mapping": {
         "ubuntu_install": { "type": "map", "required": true, "mapping": {
-            "default_user": { "type": "str", "required": true },
-            "default_password": { "type": "str" },
-            "default_password_hash": { "type": "str" },
             "use_local_security": { "type": "bool", "required": true },
             "use_serial_console": { "type": "bool", "required": true }
           }
