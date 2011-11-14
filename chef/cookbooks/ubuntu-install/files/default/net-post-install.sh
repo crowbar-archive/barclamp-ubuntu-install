@@ -29,9 +29,9 @@
 
 HTTP_SERVER=$1
 IP=${HTTP_SERVER%%:*}
-
-echo "deb http://$HTTP_SERVER/ubuntu_dvd maverick main restricted" > /target/etc/apt/sources.list
-echo "deb http://$HTTP_SERVER/ubuntu_dvd/extra /" >> /target/etc/apt/sources.list
+OS_TOKEN="ubuntu-10.10"
+echo "deb http://$HTTP_SERVER/$OS_TOKEN/install maverick main restricted" > /target/etc/apt/sources.list
+echo "deb http://$HTTP_SERVER/$OS_TOKEN/crowbar-extra /" >> /target/etc/apt/sources.list
 
 rsyslog_dir="/target/etc/rsyslog.d"
 if [ -d "$rsyslog_dir" ]; then

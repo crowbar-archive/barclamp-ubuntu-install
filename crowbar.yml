@@ -38,6 +38,8 @@ locale_additions:
 
 debs:
   pkgs:
+    # apt-cacher stuff
+    - apt-cacher
     - syslinux
 
 rpms:

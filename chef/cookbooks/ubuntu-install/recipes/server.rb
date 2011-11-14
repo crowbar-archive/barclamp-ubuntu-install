@@ -25,12 +25,13 @@ domain_name = node[:dns].nil? ? node[:domain] : (node[:dns][:domain] || node[:do
 web_port = node[:provisioner][:web_port]
 use_local_security = node[:provisioner][:use_local_security]
 
+os_token="#{node[:platform]}-#{node[:platform_version]}"
 image="ubuntu_install"
-rel_path="ubuntu_dvd/#{image}"
+rel_path="#{os_token}/install/#{image}"
 install_path = "/tftpboot/#{rel_path}"
 pxecfg_path="/tftpboot/discovery/pxelinux.cfg"
 
-append_line="url=http://#{admin_ip}:#{web_port}/ubuntu_dvd/#{image}/net_seed debian-installer/locale=en_US.utf8 console-setup/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true netcfg/dhcp_timeout=120 netcfg/choose_interface=auto netcfg/get_hostname=\"redundant\" initrd=../ubuntu_dvd/install/netboot/ubuntu-installer/amd64/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --"
+append_line="url=http://#{admin_ip}:#{web_port}/#{rel_path}/net_seed debian-installer/locale=en_US.utf8 console-setup/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true netcfg/dhcp_timeout=120 netcfg/choose_interface=auto netcfg/get_hostname=\"redundant\" initrd=../#{os_token}/install/install/netboot/ubuntu-installer/amd64/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --"
 
 if node[:provisioner][:use_serial_console]
   append_line = "console=tty0 console=ttyS1,115200n8 " + append_line
@@ -49,7 +50,7 @@ template "#{pxecfg_path}/#{image}" do
   source "default.erb"
   variables(:append_line => "append " + append_line,
             :install_name => image,  
-            :kernel => "../ubuntu_dvd/install/netboot/ubuntu-installer/amd64/linux")
+            :kernel => "../#{os_token}/install/install/netboot/ubuntu-installer/amd64/linux")
 end
 
 template "#{install_path}/net_seed" do
@@ -58,9 +59,10 @@ template "#{install_path}/net_seed" do
   group "root"
   source "net_seed.erb"
   variables(:install_name => image,  
-                :cc_use_local_security => use_local_security,
-                :cc_install_web_port => web_port,
-                :cc_built_admin_node_ip => admin_ip)
+            :cc_use_local_security => use_local_security,
+            :cc_install_web_port => web_port,
+            :cc_built_admin_node_ip => admin_ip,
+            :install_path => "#{os_token}/install")
 end
 
 cookbook_file "#{install_path}/net-post-install.sh" do
