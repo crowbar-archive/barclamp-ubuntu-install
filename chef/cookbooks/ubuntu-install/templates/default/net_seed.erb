@@ -68,7 +68,7 @@ d-i netcfg/get_domain string unassigned-domain
 d-i mirror/country string manual
 d-i mirror/protocol string http
 d-i mirror/http/hostname string <%= @cc_built_admin_node_ip %>:<%= @cc_install_web_port %>
-d-i mirror/http/directory string <%= @install_path %>
+d-i mirror/http/directory string /<%= @install_path %>
 d-i mirror/http/proxy string
 
 # Alternatively: by default, the installer uses CC.archive.ubuntu.com where
