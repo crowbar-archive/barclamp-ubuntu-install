@@ -134,7 +134,7 @@ if [[ ! -x /etc/init.d/bluepill ]]; then
     gem source -r http://rubygems.org/
     gem install bluepill
     mkdir -p /etc/bluepill
-    curl -o /etc/bluepill/chef-client.pill http://$IP:3001/chef-client.pill
+    curl -o /etc/bluepill/chef-client.pill http://$HTTP_SERVER/chef-client.pill
     # Create an init script for bluepill
     cat > /etc/init.d/bluepill <<EOF
 #!/bin/bash
