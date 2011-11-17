@@ -146,8 +146,7 @@ case \$1 in
               [[ -f \$pill ]] || continue
               bluepill load "\$pill"
            done;;
-    stop) bluepill stop
-          bluepill quit;;
+    stop) echo "Stop is not implemented, since bluepill processes are run independently.";;
     status) if pidof bluepilld; then
              echo "Bluepill is running."
              exit 0
