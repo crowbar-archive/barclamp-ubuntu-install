@@ -120,18 +120,12 @@ if [[ ! -x /etc/init.d/bluepill ]]; then
     log_to chef update-rc.d chef-client disable
     log_to chef chmod ugo-x /etc/init.d/chef-client
 
-    # Make sure that gem-installed binaries are in $PATH for everyone.
-    read gem_bin < <(gem environment | awk '-F:' '/EXECUTABLE DIRECTORY/ {print $2}')
-    if [[ ! $PATH =~ (^|:)$gem_bin(:|$) ]]; then
-	export PATH="$PATH:$gem_bin"
-	echo $PATH
-	sed -i "/PATH=/ s@PATH=.*@PATH=\"$PATH\"@" /etc/environment
-	echo "PATH=\"$PATH\"" >/etc/environment
-    fi
-
-    # Fix up our gem sources and install bluepill
-    gem source -a "http://$IP:3001/"
-    gem source -r http://rubygems.org/
+    # Make rubygems do what we want.
+    cat >/etc/gemrc <<EOF
+:sources:
+- http://$IP:3001/
+gem: --no-ri --no-rdoc --bindir /usr/local/bin
+EOF
     gem install bluepill
     mkdir -p /etc/bluepill
     curl -o /etc/bluepill/chef-client.pill http://$HTTP_SERVER/chef-client.pill
