@@ -134,7 +134,7 @@ EOF
 #!/bin/bash
 # chkconfig: 2345 10 90
 # description: Bluepill Daemon runner
-PATH=$PATH
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
 case \$1 in
     start) for pill in /etc/bluepill/*.pill; do
               [[ -f \$pill ]] || continue
