@@ -211,11 +211,11 @@ fi
 # Make sure our code is up to date
 log_to apt apt-get -q --force-yes -y upgrade
 
-# Transition to our final state
-post_state $HOSTNAME "$final_state"
-
 log_to time service ntp start
 # Fire up bluepill, and let it keep chef-client up.
 service bluepill start
+
+# Transition to our final state
+post_state $HOSTNAME "$final_state"
 
 echo "Done"
