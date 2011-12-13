@@ -12,18 +12,6 @@ d-i console-setup/layoutcode string us
 # basic form of the layout will be used):
 #d-i console-setup/variantcode string dvorak
 
-### Network configuration
-# netcfg will choose an interface that has link if possible. This makes it
-# skip displaying a list if there is more than one interface.
-d-i netcfg/choose_interface select auto
-
-# To pick a particular interface instead:
-#d-i netcfg/choose_interface select eth1
-
-# If you have a slow dhcp server and the installer times out waiting for
-# it, this might be useful.
-d-i netcfg/dhcp_timeout string 120
-
 # If you prefer to configure the network manually, uncomment this line and
 # the static network configuration below.
 #d-i netcfg/disable_dhcp boolean true
