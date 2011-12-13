@@ -31,7 +31,7 @@ rel_path="#{os_token}/install/#{image}"
 install_path = "/tftpboot/#{rel_path}"
 pxecfg_path="/tftpboot/discovery/pxelinux.cfg"
 
-append_line="url=http://#{admin_ip}:#{web_port}/#{rel_path}/net_seed debian-installer/locale=en_US.utf8 console-setup/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true netcfg/dhcp_timeout=120 netcfg/choose_interface=auto netcfg/get_hostname=\"redundant\" initrd=../#{os_token}/install/install/netboot/ubuntu-installer/amd64/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --"
+append_line="url=http://#{admin_ip}:#{web_port}/#{rel_path}/net_seed debian-installer/locale=en_US.utf8 console-setup/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true netcfg/dhcp_timeout=120 netcfg/get_hostname=\"redundant\" initrd=../#{os_token}/install/install/netboot/ubuntu-installer/amd64/initrd.gz ramdisk_size=16384 root=/dev/ram rw quiet --"
 
 if node[:provisioner][:use_serial_console]
   append_line = "console=tty0 console=ttyS1,115200n8 " + append_line
