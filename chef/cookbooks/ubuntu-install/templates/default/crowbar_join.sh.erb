@@ -16,8 +16,8 @@
 
 case $1 in
     stop) exit 0;;
-    status) service chef-client status ; exit $? ;;
-    start|'') pidof chef-client && exit 0;;
+    status) bluepill chef-client status ; exit $? ;;
+    start|'') : ;;
     *) echo "Unknown action to crowbar_join.sh."
 	exit 1;;
 esac
@@ -123,7 +123,7 @@ if [[ ! -x /etc/init.d/bluepill ]]; then
     # Make rubygems do what we want.
     cat >/etc/gemrc <<EOF
 :sources:
-- http://$IP:3001/
+- http://$HTTP_SERVER/gemsite/
 gem: --no-ri --no-rdoc --bindir /usr/local/bin
 EOF
     gem install bluepill
@@ -132,7 +132,7 @@ EOF
     # Create an init script for bluepill
     cat > /etc/init.d/bluepill <<EOF
 #!/bin/bash
-# chkconfig: 2345 10 90
+# chkconfig: 2345 99 01
 # description: Bluepill Daemon runner
 PATH=$PATH:/usr/local/bin:/usr/local/sbin
 case \$1 in
@@ -212,6 +212,7 @@ fi
 log_to apt apt-get -q --force-yes -y upgrade
 
 log_to time service ntp start
+
 # Fire up bluepill, and let it keep chef-client up.
 service bluepill start
 
